@@ -2,14 +2,17 @@ from jose import JWTError, jwt
 from passlib.context import CryptContext
 import datetime
 
-
-from error_handling import HTTPErrorHandler
-
+import os, dotenv # for env
 
 
-SECRET_KEY = "super-secret"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+from fastapi import Response
+
+
+dotenv.load_dotenv()
+
+SECRET_KEY = os.environ["JWT_SECRET"]
+ALGORITHM = os.environ["ALGO"]
+ACCESS_TOKEN_EXPIRE_MINUTES = int(os.environ["TOKEN_EXP"])
 
 # Sample admin user for now
 def get_admin_user():
@@ -45,3 +48,9 @@ def decode_token(token: str) -> dict[str, any]:
         return payload
     except JWTError as e:
         return JWTError
+
+
+# setting a cookie with exp and jwt into fastapi Response
+def create_cookie(response: Response, jwt_token: str, expires_in: datetime.timedelta) -> Response:
+    exp = datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(minutes=expires_in)
+    response.set_cookie(key="jwt-token", value=jwt_token, httponly=True, expires=exp, secure=True)

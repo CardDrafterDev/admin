@@ -3,7 +3,7 @@ from fastapi.responses import JSONResponse
 
 
 
-def http_error_handler(request, exc):
+def handle_http_exception(request, exc):
     return JSONResponse(
         status_code=exc.status_code,
         content={"message": exc.detail}
