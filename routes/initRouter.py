@@ -1,7 +1,9 @@
 from fastapi import APIRouter
 
+from .adminRouter import adminRouter
 
 
-initRouter = APIRouter()
 
+Router = APIRouter()
 
+Router.include_router(adminRouter)
