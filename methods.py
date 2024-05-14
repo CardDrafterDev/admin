@@ -56,4 +56,3 @@ def decode_token(token: str) -> dict[str, any]:
 def set_cookie(response: Response, jwt_token: str, expires_in: datetime.timedelta) -> None:
     exp = datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(minutes=expires_in)
     response.set_cookie(key="jwt-token", value=jwt_token, httponly=True, expires=exp, secure=True)
-    response.set_cookie(key="token-exp", value=exp, secure=True)

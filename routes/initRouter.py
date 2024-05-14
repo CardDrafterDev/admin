@@ -1,7 +1,6 @@
-from fastapi import APIRouter
-
 from .adminRouter import adminRouter
 
+from fastapi import APIRouter
 
 
 Router = APIRouter()

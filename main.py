@@ -1,11 +1,9 @@
+import routes.initRouter as initRouter
+
 from fastapi import FastAPI
 
 
-import routes.initRouter as initRouter
-
-
 server = FastAPI()
-
 
 
 server.include_router(initRouter.Router)
