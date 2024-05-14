@@ -19,10 +19,9 @@ async def login(user: models.User, request: Request, response: Response):
         access_token = methods.create_access_token(data={"sub": user.username}, expires_in=methods.ACCESS_TOKEN_EXPIRE_MINUTES)
 
         methods.set_cookie(response=response, jwt_token=access_token, expires_in=methods.ACCESS_TOKEN_EXPIRE_MINUTES)
-
         return status.HTTP_202_ACCEPTED
     
     else:
         err =  HTTPException(status_code=401, detail="Invalid username or password")
-        handled_err = httperr.handle_http_exception(request=request, exc=err)
+        handled_err = httperr.handle_http_exception(exc=err)
         return handled_err
