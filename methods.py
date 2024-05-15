@@ -18,7 +18,7 @@ ACCESS_TOKEN_EXPIRE_MINUTES = int(os.environ["TOKEN_EXP"])
 def get_admin_user() -> dict[str, str]:
     admin_user = {
         "username": os.environ["ADMIN_USER"],
-        "password": os.environ["ADMIN_PSWD"] # hashed password for "admin"
+        "password": os.environ["ADMIN_PSWD"]
     }
 
     return admin_user
