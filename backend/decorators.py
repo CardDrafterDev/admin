@@ -1,8 +1,6 @@
 from methods import validate_token
 
 from fastapi import status, Request
-
-
 from functools import wraps
 
 
@@ -19,3 +17,4 @@ def protected(func):
             return await func(request, *args, **kwargs)
         
     return wrapper
+ 

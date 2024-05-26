@@ -13,6 +13,7 @@ dotenv.load_dotenv()
 SECRET_KEY = os.environ["JWT_SECRET"]
 ALGORITHM = os.environ["ALGO"]
 ACCESS_TOKEN_EXPIRE_MINUTES = int(os.environ["TOKEN_EXP"])
+HOST = os.environ["SERVER_HOST"]
 
 # Sample admin user for now
 def get_admin_user() -> dict[str, str]:
