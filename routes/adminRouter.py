@@ -1,7 +1,11 @@
+import methods
+
+from decorators import protected
+
 from fastapi import APIRouter
 from fastapi import Request, status
 
-import methods
+
 
 adminRouter = APIRouter()
 
@@ -30,3 +34,11 @@ async def admin(request: Request):
             "status": status.HTTP_401_UNAUTHORIZED,
             "message": "No token provided"
         }
+
+
+
+@adminRouter.get("/admin/protected")
+@protected
+async def admin(request: Request):
+    return request.headers
+    
