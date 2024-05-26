@@ -1,26 +1,44 @@
 import methods
-import models
 
-from error_handling import HTTPErrorHandler as httperr
+from decorators import protected
 
 from fastapi import APIRouter
-from fastapi import Request, Response, status
-from fastapi import HTTPException
+from fastapi import Request, status
+
 
 
 adminRouter = APIRouter()
 
 
-# Route for admin login
-@adminRouter.post("/admin/login")
-async def login(user: models.User, request: Request, response: Response):
-    admin_user = methods.get_admin_user()
-    if user.username == admin_user["username"] and methods.pwd_context.verify(user.password, admin_user["password"]):
-        access_token = methods.create_access_token(data={"sub": user.username}, expires_in=methods.ACCESS_TOKEN_EXPIRE_MINUTES)
-        methods.set_cookie(response=response, jwt_token=access_token, expires_in=methods.ACCESS_TOKEN_EXPIRE_MINUTES)
-        return status.HTTP_202_ACCEPTED
+
+
+@adminRouter.get("/admin")
+async def admin(request: Request):
+    cookies = request.cookies
+
+    if "jwt-token" in cookies:
+        token = cookies["jwt-token"]
+        res = methods.validate_token(token)
     
+        if res["result"]:
+            return status.HTTP_202_ACCEPTED
+        
+        else:
+            return {
+                "status": status.HTTP_401_UNAUTHORIZED,
+                "message": res["message"]
+                }
+        
     else:
-        err =  HTTPException(status_code=401, detail="Invalid username or password")
-        handled_err = httperr.handle_http_exception(exc=err)
-        return handled_err
+        return {
+            "status": status.HTTP_401_UNAUTHORIZED,
+            "message": "No token provided"
+        }
+
+
+
+@adminRouter.get("/admin/protected")
+@protected
+async def admin(request: Request):
+    return request.headers
+    
